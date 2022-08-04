@@ -1,6 +1,11 @@
 {
   "name": "dice-events-task",
   "version": "0.1.0",
+  "author": {
+    "name": "Jake Nusca",
+    "email": "mail@jakenusca.com",
+    "url": "https://jakenusca.com/"
+  },
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.3",
