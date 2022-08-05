@@ -8,7 +8,7 @@ export interface EventsPageInfo {
 }
 
 export interface EventsFilters {
-  venues: string;
+  venues: string[] | string;
 }
 
 export interface EventsState {

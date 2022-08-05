@@ -5,6 +5,7 @@ describe('events reducer', () => {
     events: [
       {
         name: 'test',
+        date: '2022-04-03T17:00:00Z',
       },
     ],
     status: 'idle',

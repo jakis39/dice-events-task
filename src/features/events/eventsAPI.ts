@@ -133,7 +133,7 @@ export interface EventListing {
   checksum?: string;
   featured?: boolean;
   sold_out?: boolean;
-  date?: string;
+  date: string;
   date_end?: string;
   location?: {
     accuracy?: number;
