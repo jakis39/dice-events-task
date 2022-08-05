@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch } from '../../app/hooks';
+import { Button } from '../../common/Button';
 import { fetchEventsAsync, updateFilters } from './eventsSlice';
 
 export const EventsFilterBar = () => {
   const dispatch = useAppDispatch();
   const [venueName, setVenueName] = useState('');
 
-  function getEvents() {
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     dispatch(
       updateFilters({
         venues: venueName,
@@ -22,18 +24,26 @@ export const EventsFilterBar = () => {
 
   return (
     <Container>
-      <input
-        type="text"
-        value={venueName}
-        onChange={onVenueInputChange}
-      ></input>
-      <button onClick={getEvents}>Get events</button>
+      <form onSubmit={onSubmit}>
+        <VenueInput
+          type="text"
+          value={venueName}
+          onChange={onVenueInputChange}
+          placeholder="Search for a venue"
+        ></VenueInput>
+        <Button type="submit">Find Tickets</Button>
+      </form>
     </Container>
   );
 };
 
 const Container = styled.div`
-  border: 1px solid yellowgreen;
   padding: 1rem;
   margin-bottom: 1rem;
+`;
+
+const VenueInput = styled.input`
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  margin-right: 1rem;
 `;

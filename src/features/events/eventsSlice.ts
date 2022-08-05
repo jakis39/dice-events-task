@@ -90,5 +90,10 @@ export const { updateFilters } = eventsSlice.actions;
 export const selectEvents = (state: RootState) => state.events.events;
 export const selectAllEventsLoaded = (state: RootState) =>
   state.events.allResultsLoaded;
+export const selectIsLoadingNewSearch = (state: RootState) =>
+  state.events.status === 'loading' && state.events.page.number === 1;
+export const selectIsLoadingMore = (state: RootState) =>
+  state.events.status === 'loading' && state.events.page.number > 1;
+export const selectCurrentFilters = (state: RootState) => state.events.filter;
 
 export default eventsSlice.reducer;

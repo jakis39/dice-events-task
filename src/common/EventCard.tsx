@@ -9,12 +9,14 @@ export interface EventCardProps {
 }
 
 function formatPrice(price: number) {
-  return new Intl.NumberFormat('en-GB', {
-    style: 'currency',
-    currency: 'GBP',
-  })
-    .format(price / 100)
-    .replace('.00', '');
+  return price === 0
+    ? 'Free'
+    : new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP',
+      })
+        .format(price / 100)
+        .replace('.00', '');
 }
 
 export const EventCard = ({ event }: EventCardProps) => {
@@ -22,12 +24,12 @@ export const EventCard = ({ event }: EventCardProps) => {
   const { event_images, images } = event;
 
   const image = event_images?.square ?? images?.[0];
-  const date = new Date(event.date);
   const hasAudioTrack =
     event.apple_music_tracks?.length || event.spotify_tracks?.length;
 
-  const eventDateString = useMemo(
-    () => (
+  const eventDateString = useMemo(() => {
+    const date = new Date(event.date);
+    return (
       <>
         {date
           .toLocaleDateString('en-GB', {
@@ -45,9 +47,8 @@ export const EventCard = ({ event }: EventCardProps) => {
           })
           .replace(',', '')}
       </>
-    ),
-    [date]
-  );
+    );
+  }, [event.date]);
 
   const lowestPrice = useMemo(() => {
     if (event.ticket_types && event.ticket_types.length) {
@@ -58,16 +59,24 @@ export const EventCard = ({ event }: EventCardProps) => {
     } else {
       return 0;
     }
-  }, [event, event.ticket_types?.length]);
+  }, [event.ticket_types]);
+
+  function onBook() {
+    alert(`Booked ${event.name}`);
+  }
+
+  function onPlayAudio() {
+    console.log('Play track');
+  }
 
   return (
     <div>
       <ImageContainer expanded={expanded}>
-        {image && <Image src={image} />}
+        {image && <Image src={image} alt={'Poster image for ' + event.name} />}
         <CalloutsContainer>
           {hasAudioTrack && (
-            <PlayButton aria-label="Play track">
-              <img src={PlayIcon} />
+            <PlayButton onClick={onPlayAudio} aria-label="Play track">
+              <img src={PlayIcon} alt="play track icon" />
             </PlayButton>
           )}
           {/* <div>Featured</div> */}
@@ -118,7 +127,8 @@ export const EventCard = ({ event }: EventCardProps) => {
                 <Subheading>TICKETS</Subheading>
                 <ul>
                   {event.ticket_types?.map((ticketType) => {
-                    return ticketType.price?.total ? (
+                    return !!ticketType.price?.total ||
+                      ticketType.price?.total === 0 ? (
                       <li>
                         {ticketType.name}
                         {' — '}
@@ -137,7 +147,7 @@ export const EventCard = ({ event }: EventCardProps) => {
       </Accordion>
 
       <CtaRow>
-        <Button onClick={() => console.log('test')}>Book now</Button>
+        <Button onClick={onBook}>Book now</Button>
         <PriceContainer>
           {(event.ticket_types ?? []).length > 1 && <span>From</span>}
           <div>{lowestPrice}</div>

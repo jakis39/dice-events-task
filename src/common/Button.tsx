@@ -29,6 +29,10 @@ const StyledButton = styled.button`
   padding: 0.75rem 1.5rem;
   min-width: 160px;
 
+  &:active {
+    background-color: #2b53ba;
+  }
+
   &:disabled {
     color: #000;
     background-color: #e6e6e6;
