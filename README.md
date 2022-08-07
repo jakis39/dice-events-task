@@ -14,6 +14,7 @@ Date: 07/08/2022
 
 As this is just a throwaway task, I didn't go too deep into optimizing and fleshing things out. Here are some things that could be improved if I spent more time on this:
 
+- Error handling
 - Make global font styles to avoid redundant and hardcoded text styling throughout app
 - Move hardcoded colours in global css vars (ie. using styled-components' `createGlobalStyle()`)
 - Time zone localization (?)
