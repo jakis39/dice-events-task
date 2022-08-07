@@ -65,7 +65,7 @@ export const EventCard = ({ event }: EventCardProps) => {
       );
     }
     return formatPrice(price, event.currency);
-  }, [event.ticket_types]);
+  }, [event.ticket_types, event.currency]);
 
   function onBook() {
     // Probably navigate to another page
