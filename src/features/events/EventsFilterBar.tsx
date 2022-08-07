@@ -39,7 +39,7 @@ export const EventsFilterBar = () => {
 };
 
 const Container = styled.div`
-  padding: 1rem;
+  padding: 1rem 0;
   margin-bottom: 1rem;
 `;
 

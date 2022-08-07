@@ -71,7 +71,7 @@ export const EventsList = () => {
 };
 
 const Container = styled.div`
-  padding: 1rem;
+  padding: 1rem 0;
 
   & h1 {
     font-size: 24px;

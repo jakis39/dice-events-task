@@ -17,6 +17,7 @@ const AppContainer = styled.div`
   max-width: 1024px;
   margin: auto;
   background: white;
+  padding: 0 1rem;
 
   @media (${DeviceWidth.mediaMaxMedium}) {
     max-width: 500px;
