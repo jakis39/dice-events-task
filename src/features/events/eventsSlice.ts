@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState, AppDispatch } from '../../app/store';
+import { RootState } from '../../app/store';
 import { EventListing, fetchEvents } from './eventsAPI';
 
 export interface EventsPageInfo {
@@ -12,7 +12,7 @@ export interface EventsFilters {
 }
 
 export interface EventsState {
-  events: EventListing[]; // TODO Event type (?)
+  events: EventListing[];
   status: 'idle' | 'loading' | 'failed';
   page: EventsPageInfo;
   filter: EventsFilters;
@@ -34,13 +34,13 @@ const initialState: EventsState = {
 
 /**
  * Fetch events from the API using current page and filter info from the state
+ * Doesn't take any inputs
  */
 export const fetchEventsAsync = createAsyncThunk<
   any,
   void,
   {
     state: RootState;
-    dispatch: AppDispatch;
   }
 >('events/fetchEvents', async (_, thunkApi) => {
   const state: RootState = thunkApi.getState();
@@ -55,14 +55,11 @@ export const eventsSlice = createSlice({
   initialState,
   reducers: {
     updateFilters: (state, action: PayloadAction<EventsFilters>) => {
+      // Can "mutate" state inside reducers when using Redux Toolkit thanks to Immer
       state.filter = action.payload;
       state.page.number = 1;
       state.events = [];
       state.allResultsLoaded = false;
-    },
-    incrementPageNumber: (state) => {
-      // TODO Is this used?
-      state.page.number += 1;
     },
   },
   extraReducers: (builder) => {
@@ -87,6 +84,10 @@ export const eventsSlice = createSlice({
 
 export const { updateFilters } = eventsSlice.actions;
 
+/**
+ * Potential to use createSelector for performance improvements
+ * (not overly necessary for this task)
+ */
 export const selectEvents = (state: RootState) => state.events.events;
 export const selectAllEventsLoaded = (state: RootState) =>
   state.events.allResultsLoaded;

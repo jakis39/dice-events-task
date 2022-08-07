@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children?: React.ReactNode;
   loading?: boolean;
 }
 

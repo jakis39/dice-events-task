@@ -6,6 +6,7 @@ describe('events reducer', () => {
       {
         name: 'test',
         date: '2022-04-03T17:00:00Z',
+        sale_start_date: '2022-01-03T17:00:00Z',
       },
     ],
     status: 'idle',

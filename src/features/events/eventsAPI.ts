@@ -10,15 +10,22 @@ export function fetchEvents(page: EventsPageInfo, filters: EventsFilters) {
   return client
     .get(url, {
       headers: {
-        'x-api-key': process.env.REACT_APP_NOT_SO_SECRET_API_KEY, //TODO : MOVE TO ENV FILE!!!
+        'x-api-key': process.env.REACT_APP_NOT_SO_SECRET_API_KEY,
       },
     })
     .then((res) => {
-      console.log(res);
       return res;
     });
 }
 
+/**
+ * Helper function for converting objects into 'name[key]`
+ *  notation for the events API
+ * @param name : The name to prepend keys with
+ * @param params An object containing key: value pairs to be
+ *  converted to query params
+ * @returns A query param string
+ */
 function createQueryParamsFromObject(
   name: string,
   params: Record<string, any>
@@ -26,7 +33,6 @@ function createQueryParamsFromObject(
   const queryString = Object.keys(params)
     .map((key) => `${name}[${key}]=${params[key]}`)
     .join('&');
-  console.log(queryString);
   return queryString;
 }
 
@@ -38,6 +44,11 @@ export interface EventsApiResponse {
   };
 }
 
+/**
+ * An Event listing interface to help with typing.
+ * Most fields have been made optional for the sake of keeping this demo simple
+ * (eg. to keep initialState in tests simple)
+ */
 export interface EventListing {
   age_limit?: string;
   sale_end_date?: string;
@@ -150,7 +161,7 @@ export interface EventListing {
   timezone?: string;
   tags?: any[];
   destination_event_id?: null;
-  sale_start_date?: string;
+  sale_start_date: string;
   lineup?: [
     {
       details?: string;

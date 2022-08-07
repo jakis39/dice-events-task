@@ -44,7 +44,7 @@ export const EventsList = () => {
         <Loader>Fancy loading spinner...</Loader>
       ) : (
         <>
-          {events.length > 0 && (
+          {events.length > 0 ? (
             <>
               <h1>Upcoming events at {capitalizedVenue}</h1>
               <List>
@@ -53,6 +53,8 @@ export const EventsList = () => {
                 ))}
               </List>
             </>
+          ) : (
+            <Loader>Search for events above</Loader>
           )}
 
           {events.length > 0 && canLoadMore && (
@@ -84,6 +86,7 @@ const List = styled.div`
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 32px;
   gap: 2rem;
+  padding-bottom: 3rem;
 
   @media (${DeviceWidth.mediaMinMedium}) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -103,7 +106,7 @@ const Loader = styled.div`
 
 const LoadMoreContainer = styled.div`
   width: 100%;
-  padding: 1rem;
-  padding-top: 3rem;
+  padding-bottom: 2rem;
+  padding-top: 2rem;
   text-align: center;
 `;

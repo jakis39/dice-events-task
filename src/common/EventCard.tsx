@@ -3,20 +3,10 @@ import styled from 'styled-components';
 import { EventListing } from '../features/events/eventsAPI';
 import { Button } from './Button';
 import PlayIcon from '../assets/play-icon.png';
+import { formatPrice } from '../utils/formatters';
 
 export interface EventCardProps {
   event: EventListing;
-}
-
-function formatPrice(price: number) {
-  return price === 0
-    ? 'Free'
-    : new Intl.NumberFormat('en-GB', {
-        style: 'currency',
-        currency: 'GBP',
-      })
-        .format(price / 100)
-        .replace('.00', '');
 }
 
 export const EventCard = ({ event }: EventCardProps) => {
@@ -24,31 +14,44 @@ export const EventCard = ({ event }: EventCardProps) => {
   const { event_images, images } = event;
 
   const image = event_images?.square ?? images?.[0];
-  const hasAudioTrack =
-    event.apple_music_tracks?.length || event.spotify_tracks?.length;
+  const hasAudioTrack = !!(
+    event.apple_music_tracks?.length || event.spotify_tracks?.length
+  );
+  const isOnSale = new Date() > new Date(event.sale_start_date);
 
   const eventDateString = useMemo(() => {
     const date = new Date(event.date);
-    return (
-      <>
-        {date
+    return `
+        ${date
           .toLocaleDateString('en-GB', {
             weekday: 'short',
             day: 'numeric',
             month: 'short',
           })
           .replace(',', '')}
-        {' — '}
-        {date
+         — 
+        ${date
           .toLocaleTimeString('en-GB', {
             hour: 'numeric',
             hour12: true,
             minute: 'numeric',
           })
-          .replace(',', '')}
-      </>
-    );
+          .replace(' ', '')}
+      `;
   }, [event.date]);
+
+  const onSaleDateString = useMemo(() => {
+    const date = new Date(event.sale_start_date);
+    return date
+      .toLocaleString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        hour: 'numeric',
+        hour12: true,
+        minute: 'numeric',
+      })
+      .replace(',', '');
+  }, [event.sale_start_date]);
 
   const lowestPrice = useMemo(() => {
     if (event.ticket_types && event.ticket_types.length) {
@@ -62,10 +65,17 @@ export const EventCard = ({ event }: EventCardProps) => {
   }, [event.ticket_types]);
 
   function onBook() {
+    // Probably navigate to another page
     alert(`Booked ${event.name}`);
   }
 
+  function onGetReminded() {
+    // Maybe fire an API request to set a reminder for user
+    alert(`Reminder set for ${event.name}`);
+  }
+
   function onPlayAudio() {
+    // Play included audio track inline or kick out to spotify/apple
     console.log('Play track');
   }
 
@@ -79,13 +89,13 @@ export const EventCard = ({ event }: EventCardProps) => {
               <img src={PlayIcon} alt="play track icon" />
             </PlayButton>
           )}
-          {/* <div>Featured</div> */}
+          {event.featured && <FeaturedBadge>Featured</FeaturedBadge>}
+          {!isOnSale && <OnSaleBadge>On sale {onSaleDateString}</OnSaleBadge>}
         </CalloutsContainer>
       </ImageContainer>
 
       <div>{eventDateString}</div>
       <Title>{event.name}</Title>
-
       <strong>{event.venue}</strong>
       <div>{event.location?.city}</div>
 
@@ -98,12 +108,12 @@ export const EventCard = ({ event }: EventCardProps) => {
         <AccordionContent expanded={expanded}>
           <div>
             <ClampedDescription>{event.description}</ClampedDescription>
-            {event.artists?.length && (
+            {!!event.artists?.length && (
               <>
                 <Subheading>LINEUP</Subheading>
                 <ul>
                   {event.artists?.map((artist) => (
-                    <li>{artist}</li>
+                    <li key={artist}>{artist}</li>
                   ))}
                   {event.date_end && (
                     <li>
@@ -129,7 +139,7 @@ export const EventCard = ({ event }: EventCardProps) => {
                   {event.ticket_types?.map((ticketType) => {
                     return !!ticketType.price?.total ||
                       ticketType.price?.total === 0 ? (
-                      <li>
+                      <li key={ticketType.id}>
                         {ticketType.name}
                         {' — '}
                         <strong>{formatPrice(ticketType.price?.total)}</strong>
@@ -147,7 +157,13 @@ export const EventCard = ({ event }: EventCardProps) => {
       </Accordion>
 
       <CtaRow>
-        <Button onClick={onBook}>Book now</Button>
+        {event.sold_out && <Button disabled>Sold out</Button>}
+        {!event.sold_out &&
+          (isOnSale ? (
+            <Button onClick={onBook}>Book now</Button>
+          ) : (
+            <Button onClick={onGetReminded}>Get reminded</Button>
+          ))}
         <PriceContainer>
           {(event.ticket_types ?? []).length > 1 && <span>From</span>}
           <div>{lowestPrice}</div>
@@ -170,14 +186,6 @@ const Image = styled.img`
   vertical-align: bottom;
 `;
 
-const CalloutsContainer = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
 const PlayButton = styled.button`
   height: 50px;
   width: 50px;
@@ -188,6 +196,39 @@ const PlayButton = styled.button`
     min-height: 15px;
     vertical-align: bottom;
   }
+`;
+
+const CalloutsContainer = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 1rem;
+  box-sizing: border-box;
+
+  & ${PlayButton} {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+`;
+
+const OnSaleBadge = styled.div`
+  background: #000;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 16px;
+`;
+
+const FeaturedBadge = styled(OnSaleBadge)`
+  background: #3c74ff;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 `;
 
 const Title = styled.h3`

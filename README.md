@@ -1,8 +1,43 @@
-# Getting Started with Create React App
+# Event tickets list assignment
+
+Interview task submission
+
+Author: Jake Nusca\
+Date: 07/08/2022
+
+## Assumptions
+
+- Showing `total` price in UI, as I would want to see prices with all fees included already
+- Assuming all prices are GBP
+
+## Improvements
+
+As this is just a throwaway task, I didn't go too deep into optimizing and fleshing things out. Here are some things that could be improved if I spent more time on this:
+
+- Make global font styles to avoid redundant and hardcoded text styling throughout app
+- Move hardcoded colours in global css vars
+- Time zone localization (?)
+- Currency localization (?)
+- Pull things out into components for potential reuse, and to make EventCard file a little smaller:
+  - Accordion
+  - Badges
+- A “No results” screen for when a user types a venue that doesn't exist (or just has no events)
+- I18n - no hardcoded strings
+- Fix security vulnerabilities listed in `npm audit`
+- Data caching (perhaps using RTK Query)
+- A nicer looking search bar component
+- Typeahead searching for venue names (would need an API to get/search venue names)
+- More unit tests eg. for helper functions, thunks
+
+## Notes
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
 
-## Available Scripts
+## Set up environment variables
+
+Copy the `env.template` file and rename to `env.development` or just `.env`. Replace the values in there with the endpoint and API key that was provided with the assignment.
+
+## How to run
 
 In the project directory, you can run:
 
@@ -11,36 +46,10 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Builds the app for production to the `build` folder.
