@@ -8,6 +8,7 @@ Date: 07/08/2022
 ## Assumptions
 
 - Showing `total` price in UI, as I would want to see prices with all fees included already
+- Shows 'Free' if there is no data about ticket types (this would be business logic I would ask for clarification on)
 
 ## Improvements
 

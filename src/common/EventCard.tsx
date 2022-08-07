@@ -54,16 +54,17 @@ export const EventCard = ({ event }: EventCardProps) => {
       .replace(',', '');
   }, [event.sale_start_date]);
 
-  // Find lowest ticket price
+  /**
+   *  Find lowest ticket price. Returns 'Free' if no tickets data exists
+   */
   const lowestPrice = useMemo(() => {
+    let price = 0;
     if (event.ticket_types && event.ticket_types.length) {
-      const price = Math.min(
+      price = Math.min(
         ...event.ticket_types.map((type) => Number(type.price?.total))
       );
-      return formatPrice(price, event.currency);
-    } else {
-      return 0;
     }
+    return formatPrice(price, event.currency);
   }, [event.ticket_types]);
 
   function onBook() {
@@ -258,8 +259,9 @@ const AccordionControl = styled.button`
 `;
 
 const AccordionContent = styled.div<{ expanded: boolean }>`
-  max-height: ${({ expanded }) => (expanded ? '100vh' : 0)};
-  transition: max-height 200ms ease-out;
+  max-height: ${({ expanded }) => (expanded ? '200vh' : 0)};
+  transition: max-height 200ms
+    ${({ expanded }) => (expanded ? 'ease-in' : 'ease-out')};
   overflow: hidden;
 
   & > div {
