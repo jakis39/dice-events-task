@@ -1,9 +1,9 @@
-export function formatPrice(price: number) {
+export function formatPrice(price: number, currency: string = 'GBP') {
   return price === 0
     ? 'Free'
     : new Intl.NumberFormat('en-GB', {
         style: 'currency',
-        currency: 'GBP',
+        currency,
       })
         .format(price / 100)
         .replace('.00', '');

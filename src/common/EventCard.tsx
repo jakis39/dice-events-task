@@ -19,6 +19,7 @@ export const EventCard = ({ event }: EventCardProps) => {
   );
   const isOnSale = new Date() > new Date(event.sale_start_date);
 
+  // Format dates for presentation in UI
   const eventDateString = useMemo(() => {
     const date = new Date(event.date);
     return `
@@ -53,12 +54,13 @@ export const EventCard = ({ event }: EventCardProps) => {
       .replace(',', '');
   }, [event.sale_start_date]);
 
+  // Find lowest ticket price
   const lowestPrice = useMemo(() => {
     if (event.ticket_types && event.ticket_types.length) {
       const price = Math.min(
         ...event.ticket_types.map((type) => Number(type.price?.total))
       );
-      return formatPrice(price);
+      return formatPrice(price, event.currency);
     } else {
       return 0;
     }
@@ -142,7 +144,9 @@ export const EventCard = ({ event }: EventCardProps) => {
                       <li key={ticketType.id}>
                         {ticketType.name}
                         {' — '}
-                        <strong>{formatPrice(ticketType.price?.total)}</strong>
+                        <strong>
+                          {formatPrice(ticketType.price?.total, event.currency)}
+                        </strong>
                         {ticketType.sold_out && (
                           <SoldOutIndicator>SOLD OUT</SoldOutIndicator>
                         )}

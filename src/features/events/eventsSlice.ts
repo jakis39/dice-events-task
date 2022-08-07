@@ -54,6 +54,9 @@ export const eventsSlice = createSlice({
   name: 'events',
   initialState,
   reducers: {
+    /**
+     * Reset page state and clear events when a new search is about to be performed
+     */
     updateFilters: (state, action: PayloadAction<EventsFilters>) => {
       // Can "mutate" state inside reducers when using Redux Toolkit thanks to Immer
       state.filter = action.payload;

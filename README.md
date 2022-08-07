@@ -1,4 +1,4 @@
-# Event tickets list assignment
+# Frontend Engineer Technical Exercise
 
 Interview task submission
 
@@ -8,17 +8,15 @@ Date: 07/08/2022
 ## Assumptions
 
 - Showing `total` price in UI, as I would want to see prices with all fees included already
-- Assuming all prices are GBP
 
 ## Improvements
 
 As this is just a throwaway task, I didn't go too deep into optimizing and fleshing things out. Here are some things that could be improved if I spent more time on this:
 
 - Make global font styles to avoid redundant and hardcoded text styling throughout app
-- Move hardcoded colours in global css vars
+- Move hardcoded colours in global css vars (ie. using styled-components' `createGlobalStyle()`)
 - Time zone localization (?)
-- Currency localization (?)
-- Pull things out into components for potential reuse, and to make EventCard file a little smaller:
+- Pull things out into components for potential reuse, and to make EventCard file a little easier to read:
   - Accordion
   - Badges
 - A “No results” screen for when a user types a venue that doesn't exist (or just has no events)
@@ -26,6 +24,7 @@ As this is just a throwaway task, I didn't go too deep into optimizing and flesh
 - Fix security vulnerabilities listed in `npm audit`
 - Data caching (perhaps using RTK Query)
 - A nicer looking search bar component
+- A nicer looking landing page
 - Typeahead searching for venue names (would need an API to get/search venue names)
 - More unit tests eg. for helper functions, thunks
 
